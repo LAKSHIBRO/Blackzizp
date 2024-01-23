@@ -3,23 +3,32 @@ import AnimatedImage from "../components/AnimatedBG";
 import * as Icons from "@mui/icons-material";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
+import { env_data } from '../config/config';
 
 const MyBVPoints = () => {
   useEffect(() => {
     getRefUsers();
   }, []);
+  const [data,setData]=useState([]);
   const [balance, setBalance] = useState(null);
   // const [leftSideBV, setleftSideBV] = useState(null);
   // const [rightSideBV, setrightSideBV] = useState(null);
 
   const getRefUsers = async () => {
-    const resp = await axios.get("https://infinity-new-back.onrender.com/token");
-    const decoded = jwt_decode(resp.data.accessToken);
+ 
+        const response = await axios.get(
+            `${env_data.base_url}/Team`
+        );
+        console.log(
+            "🚀 ~ file: MyBVPoints.jsx:17  ~ response:",
+            response.data
+        );
+    
 
     // setLeftBV(resp.data.leftSideBV); 
     // setRightBV(resp.data.rightSideBV);
 
-    setBalance(decoded.balance);
+    // setBalance(decoded.balance);
 
     
     // setrightSideBV(decoded.rightSideBV);
