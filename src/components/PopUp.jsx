@@ -48,6 +48,8 @@ const PopUp = ({ icon, name, list, price, closePopUp, pkg }) => {
       const res = await axios.post(`${env_data.base_url}/buypackage`, {
         packageId: selectedPkg,
         userId: userId,
+        userName: decodeData.username,
+        refCode: decodeData.ref_code,
       });
       console.log('res.response', res)
       toast.success(res.data.msg, {
