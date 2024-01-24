@@ -86,6 +86,6 @@ const MyBVPoints = () => {
       </div>
     </div>
   );
-};
+;
 
 export default MyBVPoints;
