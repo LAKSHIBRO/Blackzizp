@@ -20,6 +20,8 @@ import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
 import { env_data } from "../../config/config";
 import jwt_decode from "jwt-decode";
+import Popup from "reactjs-popup";
+import ImageRenderer from "./ImageRenderer"; // Import the ImageRenderer component
 
 import { Routes, Route, useNavigate, Link } from "react-router-dom";
 import PopDash from "../../components/Admin/PopDash";
@@ -285,13 +287,22 @@ const AdminDash = () => {
       checked: checkedControlDataRows[row.id] || false,
     }));
 
-  const handleRowToggle = (rowId) => {
-    setCheckedRows((prevCheckedRows) => ({
-      ...prevCheckedRows,
-      [rowId]: !prevCheckedRows[rowId],
-    }));
-  };
-
+    const handleRowToggle = async (itemId, isChecked) => {
+      // Implement your logic to handle the toggle action
+      console.log(
+        `Toggled item with id ${itemId?.id}. New checked status: ${isChecked}`
+      );
+      try {
+        //   setWait(true);
+        const res = await axios.put(`${env_data.base_url}/UpdateKyc`, {
+          kycApproved: isChecked,
+          id: itemId?.id,
+        });
+        console.log("🚀 ~ handleRowToggle ~ res:", res);
+        getAllUsers();
+      } catch (error) {}
+      // You might want to update the state or perform other actions here
+    };
   const initialCheckedState = packageTableData.map(() => false);
   const [checkedStates, setCheckedStates] = useState(initialCheckedState);
   const handlePackageRowToggle = async (packageIndex, statusIndex) => {
@@ -396,7 +407,14 @@ const AdminDash = () => {
     pdf.addImage(imgData, "PNG", 10, 10, 190, 0);
     pdf.save("dashboard.pdf");
   };
+  const openURL = (item) => {
+    console.log("🚀 ~ openURL ~ item:", item);
 
+    const baseUrl = "YOUR_BASE_URL"; // Replace with your actual base URL
+    const url = `${baseUrl}/${item.replace("uploads/", "")}`;
+
+    window.open(url, "_blank");
+  };
   return (
     <div className="w-full h-screen fixed ">
       {isAdmin && (
@@ -539,16 +557,22 @@ const AdminDash = () => {
                             10
                           </option>
                           <option
-                            value="20"
+                            value="50"
                             className="text-[#151515] text-[14px]"
                           >
-                            20
+                            50
                           </option>
                           <option
-                            value="30"
+                            value="100"
                             className="text-[#151515] text-[14px]"
                           >
-                            30
+                            100
+                          </option>{" "}
+                          <option
+                            value="200"
+                            className="text-[#151515] text-[14px]"
+                          >
+                            200
                           </option>
                         </select>
                       </div>
@@ -621,7 +645,10 @@ const AdminDash = () => {
                             </th>
                             <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-t-[1px] border-opacity-40 w-[220px]">
                               Wallet Balance
-                            </th>{" "}
+                            </th>
+                            <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-t-[1px] border-opacity-40 w-[220px]">
+                              Documents
+                            </th>
                             <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-t-[1px] border-opacity-40 w-[220px]">
                               KYC
                             </th>
@@ -672,10 +699,24 @@ const AdminDash = () => {
                                 {row.balance}
                               </td>
 
-                              {/* <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 w-[220px]">
-                              {row.totalwithdrawal}
-                            </td>
-                            <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 w-[220px]">
+                              <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 w-[220px]">
+                                {/* <button
+                                  onClick={() => openURL(row.nicImage)}
+                                  className="w-full rounded-[6px] uppercase text-[#151515] font-semibold h-[44px] bg-gradient-to-r from-[#FFA524] to-[#FFDC4A] flex flex-row justify-center items-center mt-5"
+                                >
+                                  View
+                                </button> */}
+                                <Popup
+                                  trigger={<button>Open Image</button>}
+                                  modal
+                                  closeOnDocumentClick
+                                >
+                                  <div>
+                                    <ImageRenderer nicImage={row.nicImage} />
+                                  </div>
+                                </Popup>
+                              </td>
+                              {/*  <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 w-[220px]">
                               {row.totaldirectsale}
                             </td>
                             <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 w-[220px]">
@@ -695,14 +736,17 @@ const AdminDash = () => {
                                       control={
                                         <Switch
                                           size="small"
-                                          checked={row.checked}
-                                          onChange={() =>
-                                            handleRowToggle(row.id)
+                                          checked={row.kycApproved}
+                                          onChange={(event) =>
+                                            handleRowToggle(
+                                              row,
+                                              event.target.checked
+                                            )
                                           }
                                         />
                                       }
                                       label={
-                                        row.checked ? "Apprrove" : "Reject"
+                                        row?.kycApproved ? "Apprrove" : "Reject"
                                       }
                                       className="text-[#ffa524]"
                                     />

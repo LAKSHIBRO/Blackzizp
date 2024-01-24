@@ -70,14 +70,14 @@ const SideNav = () => {
         'Security'
       ]
     },
-    {
-      cat: "Features",
-      listname : "My KYC",
-      name: "MyKYC",
-      state: "isActiveMyKYC",
-      icon: "AddToQueue",
-      link: "MyKYC",
-    },
+    // {
+    //   cat: "Features",
+    //   listname : "My KYC",
+    //   name: "MyKYC",
+    //   state: "isActiveMyKYC",
+    //   icon: "AddToQueue",
+    //   link: "MyKYC",
+    // },
     
     {
       cat: "Features",
