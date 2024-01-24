@@ -71,7 +71,7 @@ export default function BinaryTable() {
                     aria-label="full width tabs example"
                     className='bg-[#151515]'
                 >
-                    <Tab label="IR Allowance" {...a11yProps(0)} className='text-white ' />
+                    {/* <Tab label="IR Allowance" {...a11yProps(0)} className='text-white ' /> */}
               
                     <Tab label="Direct Introducer" {...a11yProps(1)} className='text-white ' />
 
@@ -83,9 +83,9 @@ export default function BinaryTable() {
                 // index={value}
                 // onChangeIndex={handleChangeIndex}
             >
-                <TabPanel value={value} index={0} dir={theme.direction} className='text-white'>
+                {/* <TabPanel value={value} index={0} dir={theme.direction} className='text-white'>
                     <DefaultBinaryTree/>
-                </TabPanel>
+                </TabPanel> */}
                 <TabPanel value={value} index={1} dir={theme.direction} className='text-white'>
                     <IntroducerTree/>
                 </TabPanel>

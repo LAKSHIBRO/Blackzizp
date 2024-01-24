@@ -3,42 +3,23 @@ import AnimatedImage from "../components/AnimatedBG";
 import * as Icons from "@mui/icons-material";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { env_data } from '../config/config';
+import { env_data } from "../config/config";
 
 const MyBVPoints = () => {
+  const [rightBv, setrightBv] = useState(0);
+  const [leftBv, setleftBv] = useState(0);
+
   useEffect(() => {
     getRefUsers();
   }, []);
 
-  const [rightBv, setrightBv] = useState(0);
-  const [leftBv, setleftBv] = useState(0);
-
   const getRefUsers = async () => {
     const resp = await axios.get("https://infinity-new-back.onrender.com/token");
     const decoded = jwt_decode(resp.data.accessToken);
-
-    // setLeftBV(resp.data.leftSideBV); 
-    // setRightBV(resp.data.rightSideBV);
-
-    setBalance(decoded.balance);
-
-    
-    // setrightSideBV(decoded.rightSideBV);
-    // setleftSideBV(decoded.leftSideBV);
-  };
-  
-    console.log(
-        "🚀 ~ file: MyBVPoints.jsx:54 ~ getRefUsers ~ response:",
-        resp.data.data
-    );
-    
-
+    console.log("logged user:", decoded);
     setrightBv(decoded.rightBv);
     setleftBv(decoded.leftBv);
-
-    
   };
-
 
   const bvPoints = [
     { text: "Left BV Points", Icon: "ChevronLeft", bv: rightBv },

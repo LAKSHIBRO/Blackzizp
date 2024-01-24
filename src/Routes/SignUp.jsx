@@ -160,6 +160,7 @@ const SignUp = () => {
 
     setSelectedFiles(newSelectedFiles);
   };
+  const [image, setImage] = useState(null);
 
   const openFileBrowser = () => {
     fileInputRef.current.click();
@@ -170,13 +171,25 @@ const SignUp = () => {
     setShowStep2(true);
   };
   const handleSubmit = () => {
-   console.log('object');
+    console.log("object");
   };
   const handleFormSubmit = async (values) => {
-console.log('objeco00t',values);
+    console.log("objeco00t", values);
+    console.log("objeco00t", image);
+    const nic = "your_nic_value"; // Replace with the actual NIC value
+
+    const updatedValues = {
+      ...values, // Copy existing values
+      nicImage: image, // Update the 'nic' field
+    };
+
+    console.log(updatedValues);
     try {
       // Replace 'your/api/endpoint' with the actual URL of your API endpoint
-      const response = await axios.post(`${env_data.base_url}/register`, values);
+      const response = await axios.post(
+        `${env_data.base_url}/register`,
+        updatedValues
+      );
 
       console.log("API Response:", response.data);
       setTimeout(() => {
@@ -186,6 +199,19 @@ console.log('objeco00t',values);
     } catch (error) {
       console.error("API Error:", error);
       // Handle errors or update the state if necessary
+    }
+  };
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+
+    if (file) {
+      const reader = new FileReader();
+
+      reader.onloadend = () => {
+        setImage(reader.result);
+      };
+
+      reader.readAsDataURL(file);
     }
   };
   return (
@@ -200,7 +226,7 @@ console.log('objeco00t',values);
               Create Your Account
             </h2>
             <h3 className="text-white text-[12px]">
-              Sign to experience the trending crypto platform{" "}
+              Sign to experience the trending crypto platform
             </h3>
 
             <div className="flex flex-row w-full ">
@@ -363,20 +389,20 @@ console.log('objeco00t',values);
                           </div>
 
                           <div
-                            onClick={openFileBrowser}
+                            // onClick={openFileBrowser}
                             className="form-field-input-container cursor-pointer w-full rounded-[6px] h-[38px] bg-[#FFA524] border-[1px] border-[#FFA524] flex flex-row justify-center items-center"
                           >
                             <button
-                              onClick={openFileBrowser}
+                              // onClick={openFileBrowser}
                               className="custom-file-button text-[12px]"
                             >
                               Choose Image(s)
                             </button>
                             <input
                               type="file"
-                              ref={fileInputRef}
-                              onChange={handleFileInputChange}
-                              style={{ display: "none" }}
+                              // ref={fileInputRef}
+                              onChange={handleImageChange}
+                              // style={{ display: "none" }}
                               accept="image/jpeg, image/png, image/gif"
                               multiple
                             />
@@ -509,11 +535,9 @@ console.log('objeco00t',values);
                             name="ref_code"
                             id="ref_code"
                             style={sponsorStyle}
-                          
                             placeholder="Referal ID"
                             className="form-field-input w-full h-full p-2 bg-transparent outline-none text-white text-[12px]"
                             required
-                           
                           />
                         </div>
                         {errors.ref_code && touched.ref_code ? (
@@ -544,7 +568,6 @@ console.log('objeco00t',values);
                               style={passwordStyle}
                               onBlur={() => handleBlur("password")}
                               required
-                             
                             />
 
                             <div className=" h-[38px] w-[38px] rounded-bl-[6px] rounded-tl-[6px] justify-center items-center flex">
@@ -590,9 +613,7 @@ console.log('objeco00t',values);
                               name="confPassword"
                               id="confPassword"
                               style={confirmPasswordStyle}
-                             
                               required
-                             
                             />
                             <div className=" h-[38px] w-[38px] rounded-bl-[6px] rounded-tl-[6px] justify-center items-center flex">
                               {confirmPasswordVisible ? (
@@ -621,7 +642,7 @@ console.log('objeco00t',values);
                       </div>
 
                       <button
-                      onClick={handleSubmit}
+                        onClick={handleSubmit}
                         className="form-button w-full rounded-[6px] uppercase text-[#151515] font-semibold h-[44px] bg-gradient-to-r from-[#FFA524] to-[#FFDC4A] flex flex-row justify-center items-center mt-5"
                       >
                         Register

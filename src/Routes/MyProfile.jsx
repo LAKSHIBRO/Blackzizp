@@ -1,6 +1,11 @@
 /* eslint-disable jsx-a11y/img-redundant-alt */
 import React, { useState, useEffect } from "react";
-import { Visibility, ContentCopy, VisibilityOff, Email } from "@mui/icons-material";
+import {
+  Visibility,
+  ContentCopy,
+  VisibilityOff,
+  Email,
+} from "@mui/icons-material";
 import bitcoin from "../Assets/Icons/bitcoin coin.png";
 import rank from "../Assets/Icons/rank.png";
 import CoinCarousel from "../components/CoinCarousel";
@@ -57,7 +62,7 @@ const MyProfile = () => {
   };
 
   const [showReferralID, setShowReferralID] = useState(false);
-  const [referralID, setReferralID] = useState('');
+  const [referralID, setReferralID] = useState("");
   const [copySuccess, setCopySuccess] = useState(false);
 
   const handleVisibilityToggle = () => {
@@ -138,7 +143,7 @@ const MyProfile = () => {
       setNic(decoded.nic);
       setCreatedAt(decoded.createdAt);
 
-      setReferralID(decoded.user_code)
+      setReferralID(decoded.user_code);
       if (decoded.username === null) {
         setName(false);
       } else {
@@ -224,13 +229,14 @@ const MyProfile = () => {
 
           <div className="w-full rounded-md h-auto flex flex-row mt-5 p-5 justify-center items-center bg-[#151515] relative">
             <div className="flex flex-col w-full justify-center items-center p-5 space-y-5">
-             
               <h2 className="text-[2rem] text-white font-semibold drop-shadow-md">
                 {username}
               </h2>
               <div className="flex flex-col justify-center items-center w-full">
-                <h2 className="text-[#565656] uppercase">Account Type</h2>
-                <h2 className="text-[#FFA524] uppercase">USER</h2>
+                {/* <h2 className="text-[#565656] "></h2> */}
+                <h2 className="text-[#FFA524] uppercase p-4">
+                  KYC Status - {decodeData.kycApproved ? "Approved" : "Rejected"}
+                </h2>
 
                 <div className="md:w-3/12 w-full flex-row flex justify-center items-center space-x-3">
                   <div className=" h-[44px] md:w-1/2 w-full bg-transparent outline-none text-[#FFA524] overflow-x-hidden justify-center flex relative">

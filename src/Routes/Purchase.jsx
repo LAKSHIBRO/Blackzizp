@@ -36,7 +36,7 @@ const Purchase = () => {
           name: "GOLD",
           icon: faCoins,
           list: ["Daily Maxout $1000", "Inv. Fee $10"],
-          price: [100, 200, 300],
+          price: [100, 250, 500],
           pkg: [
             { id: 1, packageId: "gold", amount: 100, active: 1 },
             { id: 2, packageId: "gold", amount: 250, active: 0 },
@@ -47,7 +47,7 @@ const Purchase = () => {
           name: "platinum",
           icon: faShield,
           list: ["Daily Maxout $2000", "Inv. Fee $30"],
-          price: [1000, 2000, 3000],
+          price: [1000, 2500, 5000],
           pkg: [
             { id: 4, packageId: "platinum", amount: 1000, active: 0 },
             { id: 5, packageId: "platinum", amount: 2500, active: 0 },
@@ -63,7 +63,7 @@ const Purchase = () => {
             { id: 8, packageId: "Diamond", amount: 25000, active: 0 },
             { id: 9, packageId: "Diamond", amount: 50000, active: 0 },
           ],
-          price: [10000, 20000, 30000],
+          price: [10000, 25000, 50000],
         },
       ];
 
