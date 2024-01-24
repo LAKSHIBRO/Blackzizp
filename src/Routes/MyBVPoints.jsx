@@ -6,36 +6,20 @@ import jwt_decode from "jwt-decode";
 import { env_data } from '../config/config';
 
 const MyBVPoints = () => {
+  const [rightBv, setrightBv] = useState(0);
+  const [leftBv, setleftBv] = useState(0);
+
   useEffect(() => {
     getRefUsers();
   }, []);
 
-  const [rightBv, setrightBv] = useState(0);
-  const [leftBv, setleftBv] = useState(0);
-
   const getRefUsers = async () => {
     const resp = await axios.get(`${env_data.base_url}/token`);
     const decoded = jwt_decode(resp.data.accessToken);
-    console.log(
-      "loged user:",
-      decoded
-    );
+    console.log("logged user:", decoded);
     setrightBv(decoded.rightBv);
     setleftBv(decoded.leftBv);
   };
-  
-    console.log(
-        "🚀 ~ file: MyBVPoints.jsx:54 ~ getRefUsers ~ response:",
-        resp.data.data
-    );
-    
-
-    setrightBv(decoded.rightBv);
-    setleftBv(decoded.leftBv);
-
-    
-  };
-
 
   const bvPoints = [
     { text: "Left BV Points", Icon: "ChevronLeft", bv: rightBv },
@@ -86,6 +70,6 @@ const MyBVPoints = () => {
       </div>
     </div>
   );
-;
+};
 
 export default MyBVPoints;
