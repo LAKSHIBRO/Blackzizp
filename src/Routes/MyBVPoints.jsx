@@ -6,36 +6,25 @@ import jwt_decode from "jwt-decode";
 import { env_data } from "../config/config";
 
 const MyBVPoints = () => {
+  const [rightBv, setrightBv] = useState(0);
+  const [leftBv, setleftBv] = useState(0);
+
   useEffect(() => {
     getRefUsers();
   }, []);
-  const [balance, setBalance] = useState(null);
-  // const [leftSideBV, setleftSideBV] = useState(null);
-  // const [rightSideBV, setrightSideBV] = useState(null);
 
   const getRefUsers = async () => {
     const resp = await axios.get(`${env_data.base_url}/token`);
     const decoded = jwt_decode(resp.data.accessToken);
-
-    // setLeftBV(resp.data.leftSideBV); 
-    // setRightBV(resp.data.rightSideBV);
-
-    setBalance(decoded.balance);
-
-    
-    // setrightSideBV(decoded.rightSideBV);
-    // setleftSideBV(decoded.leftSideBV);
+    console.log("logged user:", decoded);
+    setrightBv(decoded.rightBv);
+    setleftBv(decoded.leftBv);
   };
 
-  // let Accbalance = balance;
-  // let BVbalance = Accbalance/5;
-  // let left = BVbalance / 10;
-  // let right = BVbalance / 10;
-
   const bvPoints = [
-    { text: "Left BV Points", Icon: "ChevronLeft", bv: 1000 },
-    { text: "Right BV Points", Icon: "ChevronRight", bv: 10000 },
-    { text: "Total BV Earned", Icon: "AccountBalanceWallet", bv: balance },
+    { text: "Left BV Points", Icon: "ChevronLeft", bv: rightBv },
+    { text: "Right BV Points", Icon: "ChevronRight", bv: leftBv },
+    { text: "Total BV Points", Icon: "AccountBalanceWallet", bv: (leftBv + rightBv) },
   ];
 
   return (
