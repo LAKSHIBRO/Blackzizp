@@ -3,7 +3,7 @@ import AnimatedImage from "../components/AnimatedBG";
 import * as Icons from "@mui/icons-material";
 import axios from "axios";
 import jwt_decode from "jwt-decode";
-import { env_data } from "../config/config";
+import { env_data } from '../config/config';
 
 const MyBVPoints = () => {
   const [rightBv, setrightBv] = useState(0);
@@ -14,7 +14,7 @@ const MyBVPoints = () => {
   }, []);
 
   const getRefUsers = async () => {
-    const resp = await axios.get("https://infinity-new-back.onrender.com/token");
+    const resp = await axios.get(`${env_data.base_url}/token`);
     const decoded = jwt_decode(resp.data.accessToken);
     console.log("logged user:", decoded);
     setrightBv(decoded.rightBv);
