@@ -8,7 +8,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import { env_data } from "../../config/config";
 
 const Deposit = () => {
-  
   useEffect(() => {
     getHistory();
   }, []);
@@ -19,19 +18,32 @@ const Deposit = () => {
     const respo3 = await axios
       .get(`${env_data.base_url}/GetAllWithdrawal`)
       .then((res) => {
-       console.log("🚀 ~ .then ~ res:GetAllWithdrawal", res.data.withdrawals)
-       setDepositDetails(res.data.withdrawals)
+        console.log("🚀 ~ .then ~ res:GetAllWithdrawal", res.data.withdrawals);
+        setDepositDetails(res.data.withdrawals);
       });
-    console.log("🚀 ~ GetAllWithdrawal ~ respo3:", respo3)
-    }
-    const [depositDetails, setDepositDetails] = useState([]);
+    console.log("🚀 ~ GetAllWithdrawal ~ respo3:", respo3);
+  };
+  const [depositDetails, setDepositDetails] = useState([]);
 
-  const handleRowToggle = () => {};
+  const handleRowToggle = async (itemId, isChecked) => {
+    // Implement your logic to handle the toggle action
+    console.log(
+      `Toggled item with id ${itemId?.id}. New checked status: ${isChecked}`
+    );
+    try {
+      //   setWait(true);
+      const res = await axios.put(`${env_data.base_url}/UpdateWithdrawal`, {
+        status: isChecked,
+        id: itemId?.id,
+      });
+      console.log("🚀 ~ handleRowToggle ~ res:", res);
+      getHistory();
+    } catch (error) {}
+    // You might want to update the state or perform other actions here
+  };
   return (
     <div className="w-full bg-[#1E1E1E] h-full fixed right-0 flex flex-col ">
       <div className="res-body lg:ml-[300px] md:ml-[100px] flex flex-col">
-       
-
         <div
           className="flex flex-col dash-body w-full h-screen sm:p-8 p-3 overflow-y-scroll pt-[66px] "
           id="style-6"
@@ -40,7 +52,7 @@ const Deposit = () => {
 
           <div className="w-full rounded-md border-[1px] border-[#565656] h-auto flex flex-col mt-5 p-5 bg-[#151515]">
             <div className="w-full justify-end items-center flex flex-row">
-            Deposits
+              Deposits
               <div className="flex flex-row justify-center items-center space-x-3">
                 <span className="text-white font-normal text-[12px] ">
                   Search
@@ -63,7 +75,7 @@ const Deposit = () => {
                   Price
                 </th>
                 <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-opacity-40">
-               status
+                  status
                 </th>
 
                 <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-opacity-40">
@@ -84,7 +96,7 @@ const Deposit = () => {
                       </td>{" "}
                       <td className="text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 bg-[#1a1a1a]">
                         {/* Use item.amount here */}
-                        {item.status}
+                        {item.status ? "Approved" : "Pending"}
                       </td>
                       <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 bg-[#1a1a1a] justify-center  items-center">
                         <div className="mx-auto text-[12px] justify-center items-center p-2">
@@ -93,11 +105,13 @@ const Deposit = () => {
                               control={
                                 <Switch
                                   size="small"
-                                  checked={false}
-                                  onChange={() => handleRowToggle(item.id)}
+                                  checked={item.status}
+                                  onChange={(event) =>
+                                    handleRowToggle(item, event.target.checked)
+                                  }
                                 />
                               }
-                              label={!item?.checked ? "Apprrove" : "Reject"}
+                              label={item?.status ? "Apprrove" : "Reject"}
                               className="text-[#ffa524]"
                             />
                           </FormGroup>
@@ -106,7 +120,6 @@ const Deposit = () => {
                     </tr>
                   ))}
                 </tbody>
-               
               </table>
             </div>
           </div>

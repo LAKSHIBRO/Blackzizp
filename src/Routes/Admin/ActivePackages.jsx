@@ -48,6 +48,7 @@ const ActivePackages = () => {
           userName: item.userName,
           userId: item.userId,
           id: item.id,
+          status: item.status,
         };
       }
 
@@ -80,7 +81,7 @@ const ActivePackages = () => {
 
     console.log("result latest arr", result);
   };
-  const handleRowToggle = async(itemId, isChecked) => {
+  const handleRowToggle = async (itemId, isChecked) => {
     // Implement your logic to handle the toggle action
     console.log(
       `Toggled item with id ${itemId?.id}. New checked status: ${isChecked}`
@@ -91,12 +92,11 @@ const ActivePackages = () => {
         status: isChecked,
         userName: itemId.userName,
         amount: itemId.amount,
+        id: itemId?.id,
       });
-      console.log("🚀 ~ handleRowToggle ~ res:", res)
-
-    } catch (error) {
-     
-    }
+      console.log("🚀 ~ handleRowToggle ~ res:", res);
+      getHistory();
+    } catch (error) {}
     // You might want to update the state or perform other actions here
   };
 
@@ -180,6 +180,9 @@ const ActivePackages = () => {
                   Date Requested
                 </th>
                 <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-opacity-40">
+                  Status
+                </th>
+                <th className="uppercase text-[12px] text-white p-2 border-[#565656] border-r-[1px] border-opacity-40">
                   ON HOLD STATUS
                 </th>
                 {/* <th className="uppercase text-[12px] text-white p-2">MORE</th> */}
@@ -202,6 +205,10 @@ const ActivePackages = () => {
                       <td className="text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 bg-[#1a1a1a]">
                         {/* Use item.amount here */}
                         {item.createdAt}
+                      </td>{" "}
+                      <td className="text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 bg-[#1a1a1a]">
+                        {/* Use item.amount here */}
+                        {item.status === 1 ? "Approved" : "Pending"}
                       </td>
                       <td className=" text-[12px] text-white p-2 border-[#565656] border-[1px] border-opacity-40 bg-[#1a1a1a] justify-center  items-center">
                         <div className="mx-auto text-[12px] justify-center items-center p-2">
@@ -209,12 +216,16 @@ const ActivePackages = () => {
                             <FormControlLabel
                               control={
                                 <Switch
-                            size="small"
-                            checked={item.status}  
-                            onChange={(event) => handleRowToggle(item, event.target.checked)}
-                          />
+                                  size="small"
+                                  checked={item.status===1}
+                                  onChange={(event) =>
+                                    handleRowToggle(item, event.target.checked)
+                                  }
+                                />
                               }
-                              label={!item?.checked ? "Apprrove" : "Reject"}
+                              label={
+                                item?.status === 1 ? "Apprrove" : "Reject"
+                              }
                               className="text-[#ffa524]"
                             />
                           </FormGroup>
